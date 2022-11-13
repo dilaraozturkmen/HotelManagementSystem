@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\HotelMangementSystem",
+    "\\HotelMangementSystem\\Views",
+    "\\HotelMangementSystem\\Views\\Booking",
+    "\\HotelMangementSystem\\Views\\Shared"
+  ],
+  "SelectedNode": "\\HotelMangementSystem\\Views\\Booking\\Index.cshtml",
+  "PreviewInSolutionExplorer": false
+}

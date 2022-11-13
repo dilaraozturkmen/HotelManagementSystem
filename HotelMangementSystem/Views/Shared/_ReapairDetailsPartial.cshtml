@@ -1,0 +1,45 @@
+﻿@model IEnumerable<HotelMangementSystem.ViewModel.RepairViewModel>
+<table class="table table-striped" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                Action
+            </th>
+            <th>
+                Oda Numarası
+            </th>
+            <th>
+                Arıza Tipi
+            </th>
+            <th>
+                Arıza Notu
+            </th>
+            <th>
+                Arıza Tarihi
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                <span id="btnDelete" class="glyphicon glyphicon-trash" onclick="DeleteRepair(@item.repairID)"></span>&nbsp;&nbsp;
+                <span id="btnEdit" class="glyphicon glyphicon-pencil" onclick="EditRepair(@item.repairID)"></span>
+            </td>
+            <td>
+                @item.roomNumber
+            </td>
+            <td>
+                @item.repairType
+            </td>
+            <td>
+                @item.repairText
+            </td>
+            <td>
+                @item.repairDate.ToString(format: "dd-MMM-yyyy")
+            </td>
+        </tr>
+        }
+    </tbody>
+    </table>

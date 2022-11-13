@@ -1,0 +1,178 @@
+﻿@model HotelMangementSystem.ViewModel.RepairViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<link href="~/Content/modal.css" rel="stylesheet" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadRepairDetails();
+        $("#txtRepairId").val("0");
+        $("#btnSave").click(function () {
+            if (!$("#formRepair").valid()) {
+                return;
+            }
+            SaveRepairData();
+        });
+    });
+    function DeleteRepair(repairId) {
+        var result = confirm("Silmek istedeğine emin misin?");
+        if (result === false) {
+            return false;
+        }
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json;charset=utf-8',
+            data: { repairId: repairId },
+            url: '/Repair/DeleteRepairDetails',
+            success: function (data) {
+                if (data.success == true) {
+                    alert(data.message);
+                    LoadRepairDetails();
+                }
+
+            },
+            error: function () {
+                alert('There is soem problem to process your request.Please try after sometime.');
+            }
+        });
+    }
+    function EditRepair(repairId) {
+
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json;charset=utf-8',
+            data: { repairId: repairId },
+            url: '/Repair/EditRepairDetails',
+            success: function (data) {
+                console.log(data);
+                $("#ddRoomId").val(data.roomId);
+                $("#txtRepairType").val(data.RepairType);
+                $("#txtRepairText").val(data.RepairText);
+                $("#txtRepairDate").val(data.RepairDate);
+
+
+                $("#divAddRepair").modal({ show: true });
+                $("#txtRepairId").val(data.RepairId);
+                $("#btnSave").text("Update");
+
+            },
+            error: function () {
+                alert('There is soem problem to process your request.Please try after sometimes.');
+            }
+        });
+    }
+    function SaveRepairData() {
+        var formData = new FormData;
+        formData.append("RepairId", $("#txtRepairId").val());
+        formData.append("RoomId", $("#ddRoomId").val());
+        formData.append("RepairText", $("#txtrepairText").val());
+        formData.append("RepairDate", $("#txtrepairDate").val());
+        formData.append("RepairType", $("#txtrepairType").val());
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                    LoadRepairDetails();
+                }
+
+            },
+            error: function () {
+                alert('There is soem problem to process your request.');
+            }
+        });
+    }
+
+        function LoadRepairDetails() {
+
+
+            $.ajax({
+                async: true,
+                data: 'Get',
+                dataType: 'HTML',
+                contentType: false,
+                processData: false,
+                url: '/Repair/GetAllRepair',
+                success: function (data) {
+                    $("#divLoadRepairDetails").html(data);
+                },
+                error: function () {
+                    alert('There is soem problem to process your request.Please try after sometimes.');
+                }
+            });
+
+
+        }
+</script>
+<div style="margin-top:20px">
+    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#divAddRepair" data-backdrop="static " data-keyboard="false" >Arıza Ekle</button>
+
+</div>
+<div id="divAddRepair" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Arıza</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+
+            </div>
+            <div class="modal-body">
+                <form id="formRepair">
+                    <div class="container col-md-12">
+                        @Html.HiddenFor(expression: model => model.repairID, htmlAttributes: new { id = "txtRepairId" })
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.RoomId, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.RoomId, Model.ListOfRoom, htmlAttributes: new { @class = "form-control", @id = "ddRoomId" })
+                            @Html.ValidationMessageFor(expression: model => model.RoomId, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.repairType)
+                            @Html.TextBoxFor(expression: model => model.repairType, htmlAttributes: new { @class = "form-control", id = "txtrepairType" })
+                            @Html.ValidationMessageFor(expression: model => model.repairType, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.repairText)
+                            @Html.TextBoxFor(expression: model => model.repairText, htmlAttributes: new { @class = "form-control", id = "txtrepairText" })
+                            @Html.ValidationMessageFor(expression: model => model.repairText, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.repairDate, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.repairDate, new { htmlAttributes = new { Value = Model.repairDate.ToString(format: "dd-MMM-yyyy"), @class = "form-control input-large", @id = "txtrepairDate" } })
+                            @Html.ValidationMessageFor(expression: model => model.repairDate, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-success">Kaydet</button> &nbsp;
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Kapat</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div id="divLoadRepairDetails">
+
+</div>

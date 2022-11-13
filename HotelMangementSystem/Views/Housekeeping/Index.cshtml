@@ -1,0 +1,193 @@
+﻿@model HotelMangementSystem.ViewModel.HousekeepingViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/modal.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        LoadHousekeepingDetails();
+        $("#btnSave").click(function () {
+            if (!$("#formHousekeeping").valid()) {
+                return;
+            }
+
+        });
+    });
+    function SaveHousekeeping() {
+        var formData = new FormData;
+
+        formData.append("RoomNumber", $("#txtRoomNumber").val());
+        formData.append("HousekeepingStatusId", $("#ddHousekeepingStatusId").val());
+        formData.append("txtEmployeeId", $("#txtEmployeeId").val());
+        formData.append("txtHousekeepingNote", $("#txtHousekeepingNote").val());
+
+        $.ajax({
+            async: true,
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            data: formData,
+            success: function (data) {
+                if (data.success === true) {
+                    alert(data.message);
+                   
+                    LoadHousekeepingDetails();
+                }
+
+            },
+            error: function () {
+                alert('There is soem problem to process your request.');
+            }
+        })
+    }
+    function EditHousekeeping(HousekeepingId) {
+
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json;charset=utf-8',
+            data: { HousekeepingId: HousekeepingId },
+            url: '/Housekeeping/EditHousekeepingDetails',
+            success: function (data) {
+                console.log(data);
+                $("#txtRoomNumber").val(data.RoomNumber);
+                $("#ddHousekeepingStatusId").val(data.HousekeepingStatusId);
+                $("#txtEmployeeId").val(data.EmployeeId);
+                $("#txtHousekeepingNote").val(data.HousekeepingNote);
+               
+
+
+                $("#divAddHousekeeping").modal({ show: true });
+                $("#txtHousekeepingId").val(data.BookingId);
+                $("#btnSave").text("Update");
+
+            },
+            error: function () {
+                alert('There is soem problem to process your request.Please try after sometimes.');
+            }
+        });
+    }
+    function DeleteHousekeeping(HousekeepingId) {
+        var result = confirm("Silmek istedeğine emin misin?");
+        if (result === false) {
+            return false;
+        }
+        $.ajax({
+            async: true,
+            type: 'GET',
+            dataType: 'JSON',
+            contentType: 'application/json;charset=utf-8',
+            data: { HousekeepingId: Housekeepingd },
+            url: '/Housekeeping/DeleteHousekeepingDetails',
+            success: function (data) {
+                if (data.success == true) {
+                    alert(data.message);
+                    LoadHousekeepingDetails();
+                }
+
+            },
+            error: function () {
+                alert('There is soem problem to process your request.Please try after sometime.');
+            }
+        });
+    }
+
+    function LoadHousekeepingDetails() {
+
+        $.ajax({
+            async: true,
+            data: 'Get',
+            dataType: 'HTML',
+            contentType: false,
+            processData: false,
+
+            url: '/Housekeeping/GetAllHousekeeping',
+            success: function (data) {
+                $("#divLoadHousekeepingDetails").html(data);
+            },
+            error: function () {
+                alert('There is soem problem to process your request.Please try after sometimes.');
+            }
+        });
+
+
+    }
+    function ResetHousekeeping() {
+        $("#txtEmployeeId").val('');
+     
+
+
+
+    }
+</script>
+<div style="margin-top:20px">
+    <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#divAddHousekeeping" data-backdrop="static " data-keyboard="false" onclick=" ResetHousekeeping()">Housekeeping</button>
+
+</div>
+<div id="divAddHousekeeping" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Housekeeping</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+
+            </div>
+            <div class="modal-body">
+                <form id="formHousekeeping">
+                    <div class="container col-md-12">
+                        @Html.HiddenFor(expression: model => model.RoomNumber, htmlAttributes: new { id = "txtRoomNumber" })
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.RoomNumber)
+                            @Html.TextBoxFor(model => model.RoomNumber, htmlAttributes: new { @class = "form-control", id = "txtRoomNumber" })
+                            @Html.ValidationMessageFor(expression: model => model.RoomNumber, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.EmployeeId)
+                            @Html.TextBoxFor(expression: model => model.EmployeeId, htmlAttributes: new { @class = "form-control", id = "txtEmployeeId" })
+                            @Html.ValidationMessageFor(expression: model => model.EmployeeId, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.HousekeepingStatusId)
+                            @Html.DropDownList("ListOfHousekeepingStatus", null, new { @class = "form-control", id = "ddHousekeepingStatusId" })
+                            @Html.ValidationMessageFor(expression: model => model.HousekeepingStatusId, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+                        <div class="form-group col-md-6">
+                            @Html.LabelFor(expression: model => model.HousekeepingNote)
+                            @Html.TextBoxFor(expression: model => model.HousekeepingNote, htmlAttributes: new { @class = "form-control", id = "txtHousekeepingNote" })
+                            @Html.ValidationMessageFor(expression: model => model.HousekeepingNote, validationMessage: null, htmlAttributes: new { @class = "text-danger" })
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSave" type="button" class="btn btn-success">Kaydet</button> &nbsp;
+                <button type="button" data-dismiss="modal" class="btn btn-danger">Kapat</button>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div style="margin-top:10px"></div>
+<div id="divLoadHousekeepingDetails">
+
+</div>
+

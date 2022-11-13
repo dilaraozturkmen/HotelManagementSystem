@@ -1,0 +1,76 @@
+﻿@model IEnumerable<HotelMangementSystem.ViewModel.RoomBookingViewModel>
+    <table class="table table-striped" style="width :100%">
+        <thead>
+            <tr>
+                <th>
+                    Action
+                </th>
+                <th>
+                    Ad-Soyad
+                </th>
+                @*<th>
+            Adres
+        </th>
+        <th>
+            Telefon Numarası
+        </th>*@
+                <th>
+                    Başlangıç Tarihi
+                </th>
+                <th>
+                    Bitiş Tarihi
+                </th>
+                <th>
+                    Oda Numarası
+                </th>
+                <th>
+                    Kişi Sayısı
+                </th>
+                <th>
+                    Gün Sayısı
+                </th>
+                <th>
+                    Oda Fiyatı
+                </th>
+                <th>
+                    Toplam Fiyat
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+            <tr>
+                <td>
+                    <span id="btnDelete" class="glyphicon glyphicon-trash" onclick="DeleteBooking(@item.BookingId)"></span>&nbsp;&nbsp;
+                    <span id="btnEdit" class="glyphicon glyphicon-pencil" onclick="EditBooking(@item.BookingId)"></span>
+                </td>
+                <td>
+                    @item.CustomerName
+                </td>
+     
+                <td>
+                    @item.BookingFrom.ToString(format: "dd-MMM-yyyy")
+                </td>
+                <td>
+                    @item.BookingTo.ToString(format: "dd-MMM-yyyy")
+                </td>
+                <td>
+                    @item.RoomNumber
+                </td>
+                <td>
+                    @item.NoOfMember
+                </td>
+                <td>
+                    @item.NumberOfDays
+                </td>
+                <td>
+                    @item.RoomPrice.ToString(format: "#,##0.00")
+                </td>
+                <td>
+                    @item.TotalAmount.ToString(format: "#,##0.00")
+                </td>
+            </tr>
+                }
+            </tbody>
+        </table>

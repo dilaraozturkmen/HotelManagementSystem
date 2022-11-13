@@ -1,0 +1,462 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HotelDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerFirstName" Type="varchar" MaxLength="50" />
+          <Property Name="CustomerLastName" Type="varchar" MaxLength="50" />
+          <Property Name="CustomerPhone" Type="varchar" MaxLength="11" />
+          <Property Name="CustomerAddress" Type="varchar" MaxLength="100" />
+          <Property Name="CustomerTC" Type="varchar" MaxLength="11" />
+          <Property Name="CustomerGender" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeFirstName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeLastName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeePhone" Type="varchar" MaxLength="11" />
+          <Property Name="EmployeeJob" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeeAddress" Type="varchar" MaxLength="100" />
+          <Property Name="EmployeeUserName" Type="varchar" MaxLength="50" />
+          <Property Name="EmployeePassword" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="Housekeeping">
+          <Key>
+            <PropertyRef Name="HousekeepingId" />
+          </Key>
+          <Property Name="HousekeepingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomNumber" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="HousekeepingStatusId" Type="int" Nullable="false" />
+          <Property Name="HousekeepingNote" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="PaymentId" />
+          </Key>
+          <Property Name="PaymentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookingId" Type="int" Nullable="false" />
+          <Property Name="PaymentTypeId" Type="int" Nullable="false" />
+          <Property Name="PaymentAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Repair">
+          <Key>
+            <PropertyRef Name="repairID" />
+          </Key>
+          <Property Name="repairID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
+          <Property Name="repairDate" Type="date" />
+          <Property Name="repairType" Type="varchar" MaxLength="50" />
+          <Property Name="repairText" Type="text" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HotelDB.Hotel.Request' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="requestID" Type="int" Nullable="false" />
+          <Property Name="requestText" Type="text" />
+          <Property Name="requestStatus" Type="varchar" MaxLength="50" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomBookings">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="BookingFrom" Type="date" Nullable="false" />
+          <Property Name="BookingTo" Type="date" Nullable="false" />
+          <Property Name="AssignRoomId" Type="int" Nullable="false" />
+          <Property Name="NoOfMember" Type="int" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomNumber" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="RoomImage" Type="nvarchar" MaxLength="550" Nullable="false" />
+          <Property Name="RoomPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="BookingStatusId" Type="int" Nullable="false" />
+          <Property Name="RoomTypeId" Type="int" Nullable="false" />
+          <Property Name="RoomCapacity" Type="int" Nullable="false" />
+          <Property Name="RoomDescription" Type="nvarchar" MaxLength="550" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookingStatus">
+          <Key>
+            <PropertyRef Name="BookingStatusId" />
+          </Key>
+          <Property Name="BookingStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Bookingstatus" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HotelDB.Master.HousekeepingStatus' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HousekeepingStatus">
+          <Key>
+            <PropertyRef Name="HousekeepingStatusId" />
+          </Key>
+          <Property Name="HousekeepingStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HousekeepingStatus" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HotelDB.Master.PaymentTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PaymentTypes">
+          <Key>
+            <PropertyRef Name="PaymentTypeId" />
+            <PropertyRef Name="PaymentType" />
+          </Key>
+          <Property Name="PaymentTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PaymentType" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="RoomTypeId" />
+          </Key>
+          <Property Name="RoomTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RooomTypeName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="HotelDBModelStoreContainer">
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="Housekeeping" EntityType="Self.Housekeeping" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="Payments" EntityType="Self.Payments" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="Repair" EntityType="Self.Repair" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="RoomBookings" EntityType="Self.RoomBookings" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="Hotel" store:Type="Tables" />
+          <EntitySet Name="BookingStatus" EntityType="Self.BookingStatus" Schema="Master" store:Type="Tables" />
+          <EntitySet Name="RoomType" EntityType="Self.RoomType" Schema="Master" store:Type="Tables" />
+          <EntitySet Name="Request" EntityType="Self.Request" store:Type="Tables" store:Schema="Hotel">
+            <DefiningQuery>SELECT 
+    [Request].[requestID] AS [requestID], 
+    [Request].[requestText] AS [requestText], 
+    [Request].[requestStatus] AS [requestStatus], 
+    [Request].[RoomId] AS [RoomId]
+    FROM [Hotel].[Request] AS [Request]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HousekeepingStatus" EntityType="Self.HousekeepingStatus" store:Type="Tables" store:Schema="Master">
+            <DefiningQuery>SELECT 
+    [HousekeepingStatus].[HousekeepingStatusId] AS [HousekeepingStatusId], 
+    [HousekeepingStatus].[HousekeepingStatus] AS [HousekeepingStatus]
+    FROM [Master].[HousekeepingStatus] AS [HousekeepingStatus]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="PaymentTypes" EntityType="Self.PaymentTypes" store:Type="Tables" store:Schema="Master">
+            <DefiningQuery>SELECT 
+    [PaymentTypes].[PaymentTypeId] AS [PaymentTypeId], 
+    [PaymentTypes].[PaymentType] AS [PaymentType]
+    FROM [Master].[PaymentTypes] AS [PaymentTypes]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HotelDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Payments">
+          <Key>
+            <PropertyRef Name="PaymentId" />
+          </Key>
+          <Property Name="PaymentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookingId" Type="Int32" Nullable="false" />
+          <Property Name="PaymentTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PaymentAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="BookingStatus">
+          <Key>
+            <PropertyRef Name="BookingStatusId" />
+          </Key>
+          <Property Name="BookingStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Bookingstatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PaymentTypes">
+          <Key>
+            <PropertyRef Name="PaymentTypeId" />
+            <PropertyRef Name="PaymentType" />
+          </Key>
+          <Property Name="PaymentTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PaymentType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="HotelDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Payments" EntityType="Self.Payments" />
+          <EntitySet Name="BookingStatus" EntityType="Self.BookingStatus" />
+          <EntitySet Name="PaymentTypes" EntityType="Self.PaymentTypes" />
+          <EntitySet Name="RoomType" EntityType="HotelDBModel.RoomType" />
+          <EntitySet Name="Customer" EntityType="HotelDBModel.Customer" />
+          <EntitySet Name="Repair" EntityType="HotelDBModel.Repair" />
+          <EntitySet Name="Rooms" EntityType="HotelDBModel.Rooms" />
+          <EntitySet Name="Request" EntityType="HotelDBModel.Request" />
+          <EntitySet Name="RoomBookings" EntityType="HotelDBModel.RoomBookings" />
+          <EntitySet Name="Employee" EntityType="HotelDBModel.Employee" />
+          <EntitySet Name="HousekeepingStatus" EntityType="HotelDBModel.HousekeepingStatus" />
+          <EntitySet Name="Housekeeping" EntityType="HotelDBModel.Housekeeping" />
+        </EntityContainer>
+        <EntityType Name="RoomType">
+          <Key>
+            <PropertyRef Name="RoomTypeId" />
+          </Key>
+          <Property Name="RoomTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RooomTypeName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerPhone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerTC" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerGender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Repair">
+          <Key>
+            <PropertyRef Name="repairID" />
+          </Key>
+          <Property Name="repairID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+          <Property Name="repairDate" Type="DateTime" Precision="0" />
+          <Property Name="repairType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="repairText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Rooms">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="RoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomNumber" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="RoomImage" Type="String" Nullable="false" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="RoomPrice" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="BookingStatusId" Type="Int32" Nullable="false" />
+          <Property Name="RoomTypeId" Type="Int32" Nullable="false" />
+          <Property Name="RoomCapacity" Type="Int32" Nullable="false" />
+          <Property Name="RoomDescription" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" />
+          <Property Name="requestText" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="requestStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoomBookings">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="BookingFrom" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BookingTo" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AssignRoomId" Type="Int32" Nullable="false" />
+          <Property Name="NoOfMember" Type="Int32" Nullable="false" />
+          <Property Name="TotalAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeePhone" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeJob" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeUserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeePassword" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="HousekeepingStatus">
+          <Key>
+            <PropertyRef Name="HousekeepingStatusId" />
+          </Key>
+          <Property Name="HousekeepingStatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HousekeepingStatus1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Housekeeping">
+          <Key>
+            <PropertyRef Name="HousekeepingId" />
+          </Key>
+          <Property Name="HousekeepingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomNumber" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="HousekeepingStatusId" Type="Int32" Nullable="false" />
+          <Property Name="HousekeepingNote" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HotelDBModelStoreContainer" CdmEntityContainer="HotelDBEntities">
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="HotelDBModel.Payments">
+              <MappingFragment StoreEntitySet="Payments">
+                <ScalarProperty Name="PaymentId" ColumnName="PaymentId" />
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+                <ScalarProperty Name="PaymentTypeId" ColumnName="PaymentTypeId" />
+                <ScalarProperty Name="PaymentAmount" ColumnName="PaymentAmount" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BookingStatus">
+            <EntityTypeMapping TypeName="HotelDBModel.BookingStatus">
+              <MappingFragment StoreEntitySet="BookingStatus">
+                <ScalarProperty Name="BookingStatusId" ColumnName="BookingStatusId" />
+                <ScalarProperty Name="Bookingstatus" ColumnName="Bookingstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentTypes">
+            <EntityTypeMapping TypeName="HotelDBModel.PaymentTypes">
+              <MappingFragment StoreEntitySet="PaymentTypes">
+                <ScalarProperty Name="PaymentTypeId" ColumnName="PaymentTypeId" />
+                <ScalarProperty Name="PaymentType" ColumnName="PaymentType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomType">
+            <EntityTypeMapping TypeName="HotelDBModel.RoomType">
+              <MappingFragment StoreEntitySet="RoomType">
+                <ScalarProperty Name="RooomTypeName" ColumnName="RooomTypeName" />
+                <ScalarProperty Name="RoomTypeId" ColumnName="RoomTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="HotelDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerGender" ColumnName="CustomerGender" />
+                <ScalarProperty Name="CustomerTC" ColumnName="CustomerTC" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerLastName" ColumnName="CustomerLastName" />
+                <ScalarProperty Name="CustomerFirstName" ColumnName="CustomerFirstName" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Repair">
+            <EntityTypeMapping TypeName="HotelDBModel.Repair">
+              <MappingFragment StoreEntitySet="Repair">
+                <ScalarProperty Name="repairText" ColumnName="repairText" />
+                <ScalarProperty Name="repairType" ColumnName="repairType" />
+                <ScalarProperty Name="repairDate" ColumnName="repairDate" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="repairID" ColumnName="repairID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="HotelDBModel.Rooms">
+              <MappingFragment StoreEntitySet="Rooms">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="RoomDescription" ColumnName="RoomDescription" />
+                <ScalarProperty Name="RoomCapacity" ColumnName="RoomCapacity" />
+                <ScalarProperty Name="RoomTypeId" ColumnName="RoomTypeId" />
+                <ScalarProperty Name="BookingStatusId" ColumnName="BookingStatusId" />
+                <ScalarProperty Name="RoomPrice" ColumnName="RoomPrice" />
+                <ScalarProperty Name="RoomImage" ColumnName="RoomImage" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Request">
+            <EntityTypeMapping TypeName="HotelDBModel.Request">
+              <MappingFragment StoreEntitySet="Request">
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="requestStatus" ColumnName="requestStatus" />
+                <ScalarProperty Name="requestText" ColumnName="requestText" />
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomBookings">
+            <EntityTypeMapping TypeName="HotelDBModel.RoomBookings">
+              <MappingFragment StoreEntitySet="RoomBookings">
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="NoOfMember" ColumnName="NoOfMember" />
+                <ScalarProperty Name="AssignRoomId" ColumnName="AssignRoomId" />
+                <ScalarProperty Name="BookingTo" ColumnName="BookingTo" />
+                <ScalarProperty Name="BookingFrom" ColumnName="BookingFrom" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="HotelDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeePassword" ColumnName="EmployeePassword" />
+                <ScalarProperty Name="EmployeeUserName" ColumnName="EmployeeUserName" />
+                <ScalarProperty Name="EmployeeAddress" ColumnName="EmployeeAddress" />
+                <ScalarProperty Name="EmployeeJob" ColumnName="EmployeeJob" />
+                <ScalarProperty Name="EmployeePhone" ColumnName="EmployeePhone" />
+                <ScalarProperty Name="EmployeeLastName" ColumnName="EmployeeLastName" />
+                <ScalarProperty Name="EmployeeFirstName" ColumnName="EmployeeFirstName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HousekeepingStatus">
+            <EntityTypeMapping TypeName="HotelDBModel.HousekeepingStatus">
+              <MappingFragment StoreEntitySet="HousekeepingStatus">
+                <ScalarProperty Name="HousekeepingStatus1" ColumnName="HousekeepingStatus" />
+                <ScalarProperty Name="HousekeepingStatusId" ColumnName="HousekeepingStatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Housekeeping">
+            <EntityTypeMapping TypeName="HotelDBModel.Housekeeping">
+              <MappingFragment StoreEntitySet="Housekeeping">
+                <ScalarProperty Name="HousekeepingNote" ColumnName="HousekeepingNote" />
+                <ScalarProperty Name="HousekeepingStatusId" ColumnName="HousekeepingStatusId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="RoomNumber" ColumnName="RoomNumber" />
+                <ScalarProperty Name="HousekeepingId" ColumnName="HousekeepingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

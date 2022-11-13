@@ -1,0 +1,62 @@
+﻿@model IEnumerable<HotelMangementSystem.ViewModel.CustomerViewModel>
+<table class="table table-striped" style="width :100%">
+    <thead>
+        <tr>
+            <th>
+                Action
+            </th>
+            <th>
+                TC
+            </th>
+            <th>
+                Ad
+            </th>
+            <th>
+                Soyad
+            </th>
+            <th>
+                Adres
+            </th>
+            <th>
+                Telefon Numarası
+            </th>
+
+            <th>
+                Cinsiyet
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <span id="btnDelete" class="glyphicon glyphicon-trash" onclick="DeleteCustomer(@item.CustomerId)"></span>&nbsp;&nbsp;
+                    <span id="btnEdit" class="glyphicon glyphicon-pencil" onclick="EditCustomer(@item.CustomerId)"></span>
+                </td>
+                <td>
+                    @item.CustomerTC
+                </td>
+
+                <td>
+                    @item.CustomerFirstName
+                </td>
+                <td>
+                    @item.CustomerLastName
+                </td>
+                <td>
+                    @item.CustomerAddress
+                </td>
+                <td>
+                    @item.CustomerPhone
+                </td>
+                <td>
+                    @item.CustomerGender
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+

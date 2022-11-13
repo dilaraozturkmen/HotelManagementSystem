@@ -1,0 +1,26 @@
+﻿@model IEnumerable<HotelMangementSystem.ViewModel.HousekeepingDetailsViewModel>
+
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <div class="col-md-9">
+
+                    No : @item.RoomNumber
+                </div>
+                <div class="col-md-3">
+                    <span id="btnDelete" class="glyphicon glyphicon-trash" onclick="DeleteHousekeeping(@item.HousekeepingId)"></span>&nbsp;&nbsp;
+                    <span id="btnEdit" class="glyphicon glyphicon-pencil " onclick="EditHousekeeping(@item.HousekeepingId)"></span>
+                </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.HousekeepingStatus</h5>
+
+                </div>
+            </div>
+              
+       </div>
+            
+    }
